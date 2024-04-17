@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 """This module defines a class to manage db storage for hbnb clone"""
-
 from os import getenv
 from models.base_model import Base
 from models.base_model import BaseModel
@@ -17,7 +16,7 @@ from sqlalchemy.orm import sessionmaker
 
 
 class DBStorage:
-    """This class manages storage of hbnb models in MySql"""
+    """Represents a database storage engine. """
 
     __engine = None
     __session = None
@@ -69,5 +68,5 @@ class DBStorage:
         self.__session = Session()
 
     def close(self):
-        """Close method"""
+        """close method"""
         self.__session.close()
