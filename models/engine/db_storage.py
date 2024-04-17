@@ -9,7 +9,7 @@ from models.city import City
 from models.place import Place
 from models.review import Review
 from models.state import State
-from models.user improt User
+from models.user import User
 from sqlalchemy import create_engine
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm import scoped_session
@@ -64,7 +64,7 @@ class DBStorage:
     def reload(self):
         """Create all tables in the database and initialize a new session."""
         Base.metadata.create_all(self.__engine)
-        session = sessionmaker(bind=self.__enginem expire_on_commit=False)
+        session = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(session)
         self.__session = Session()
 
