@@ -9,5 +9,5 @@ from models.place import association_table
 class Amenity(BaseModel):
     """Amenity model of hbnb project"""
     __tablename__ = "amenities"
-    name = Cloumn(String(128), nullable=False)
+    name = Column(String(128), nullable=False)
     place_amenities = relationship("Place", secondary=association_table)

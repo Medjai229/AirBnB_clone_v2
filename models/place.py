@@ -7,7 +7,7 @@ from os import getenv
 
 
 association_table = Table("place_amenity", Base.metadata,
-                          Cloumn("place_id", String(60),
+                          Column("place_id", String(60),
                                  ForeignKey("places.id"),
                                  primary_key=True, nullable=False),
                           Column("amenity_id", String(60),
