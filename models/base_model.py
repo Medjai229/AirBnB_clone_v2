@@ -28,12 +28,11 @@ class BaseModel:
                 kwargs['created_at'] = datetime.strptime(
                         kwargs['created_at'], '%Y-%m-%dT%H:%M:%S.%f')
             except Exception:
-                if 'id' not in kwargs.key():
+                if 'id' not in kwargs.keys():
                     self.__init__()
                 else:
                     self.created_at = datetime.now()
                     self.updated_at = datetime.now()
-
             try:
                 del kwargs['__class__']
             except Exception:
@@ -42,9 +41,9 @@ class BaseModel:
 
     def __str__(self):
         """Returns a string representation of the instance"""
-        str_dict = self.__dict__.copy()
-        str_dict.pop("_sa_instance_state", None)
-        return '[{}] ({}) {}'.format(type(self).__name__, self.id, str_dict)
+        dictionary = self.__dict__.copy()
+        dictionary.pop("_sa_instance_state", None)
+        return "[{}] ({}) {}".format(type(self).__name__, self.id, dictionary)
 
     def save(self):
         """Updates updated_at with current time when instance is changed"""
@@ -61,9 +60,10 @@ class BaseModel:
                           (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
+        dictionary.pop("_sa_instance_state", None)
         return dictionary
 
     def delete(self):
-        """Deletes the current instance from storage"""
+        """ Deletes the current instance from storage using models.storage """
         from models import storage
         storage.delete(self)
