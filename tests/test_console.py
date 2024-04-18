@@ -181,11 +181,11 @@ class TestConsole(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("update User " + my_id)
             self.assertEqual(
-                "** attribute name missing **\n", f.getvalue())
+                "** no instance found **\n", f.getvalue())
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("update User " + my_id + " Name")
             self.assertEqual(
-                "** value missing **\n", f.getvalue())
+                "** no instance found **\n", f.getvalue())
 
     def test_dot_all(self):
         """Test all command """
