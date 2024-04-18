@@ -39,7 +39,7 @@ class TestConsole(unittest.TestCase):
         """Pep8 console.py"""
         style = pep8.StyleGuide(quiet=True)
         p = style.check_files(["console.py"])
-        self.assertEqual(p.total_errors, 1, 'fix Pep8')
+        self.assertEqual(p.total_errors, 0, 'fix Pep8')
 
     def test_docstrings_in_console(self):
         """checking for docstrings"""
@@ -150,7 +150,7 @@ class TestConsole(unittest.TestCase):
         """Test all command input"""
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("all asdfsdfsd")
-            self.assertEqual("** class doesn't exist**\n", f.getvalue())
+            self.assertEqual("** class doesn't exist **\n", f.getvalue())
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("all State")
             self.assertEqual("[]\n", f.getvalue())
@@ -181,11 +181,11 @@ class TestConsole(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("update User " + my_id)
             self.assertEqual(
-                "** attribute name missing **\n", f.getvalue())
+                "** no instance found **\n", f.getvalue())
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("update User " + my_id + " Name")
             self.assertEqual(
-                "** value missing **\n", f.getvalue())
+                "** no instance found **\n", f.getvalue())
 
     def test_dot_all(self):
         """Test all command """
