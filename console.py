@@ -237,7 +237,7 @@ class HBNBCommand(cmd.Cmd):
             print([objs[key].__str__() for key in objs])
             
         except NameError:
-            print("** class doesn't exist**")
+            print("** class doesn't exist **")
 
     def help_all(self):
         """ Help information for the all command """
