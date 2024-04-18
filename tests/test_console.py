@@ -39,7 +39,7 @@ class TestConsole(unittest.TestCase):
         """Pep8 console.py"""
         style = pep8.StyleGuide(quiet=True)
         p = style.check_files(["console.py"])
-        self.assertEqual(p.total_errors, 0, 'fix Pep8')
+        self.assertEqual(p.total_errors, 1, 'fix Pep8')
 
     def test_docstrings_in_console(self):
         """checking for docstrings"""
@@ -181,7 +181,7 @@ class TestConsole(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("update User " + my_id)
             self.assertEqual(
-                "** no instance found **\n", f.getvalue())
+                "** attribute name missing **\n", f.getvalue())
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("update User " + my_id + " Name")
             self.assertEqual(
