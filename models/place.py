@@ -1,8 +1,18 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, String, ForeignKey, Integer, Float
+from sqlalchemy import Column, String, ForeignKey, Integer, Float, Table
 from sqlalchemy.orm import relationship
+from os import getenv
+
+
+association_table = Table("place_amenity", Base.metadata,
+                          Cloumn("place_id", String(60),
+                                 ForeignKey("places.id"),
+                                 primary_key=True, nullable=False),
+                          Column("amenity_id", String(60),
+                                 ForeignKey("amenities.id"),
+                                 primary_key=True, nullable=False))
 
 
 class Place(BaseModel, Base):
@@ -20,6 +30,9 @@ class Place(BaseModel, Base):
     longitude = Column(Float)
 
     reviews = relationship('Review', backref='place', cascade='delete')
+    amenities = relationship('Amenity', secondary='place_amenity',
+                             viewonly=False)
+    amenity_ids = []
 
     if getenv("HBNB_TYPE_STORAGE", None) != "db":
         @property
@@ -28,6 +41,23 @@ class Place(BaseModel, Base):
             from models.review import Review
             review_list = []
             for review in list(models.storage.all(Review).values()):
-                if review.place_id = self.id:
+                if review.place_id == self.id:
                     review_list.append(review)
             return review
+
+        @property
+        def amenities(self):
+            """Getter method for amenities attribute for FileStorage"""
+            from models.amenity import Amenity
+            amenity_list = []
+            for amenity in list(models.storage.all(Amenity).values()):
+                if amenity.id in self.amenity_ids:
+                    amenity_list.append(amenity)
+            return amenity_list
+
+        @amenities.setter
+        def amenities(self, value):
+            """Setter method for amenities property for FileStorage"""
+            from models.amenity import Amenity
+            if type(value) == Amenity:
+                self.amenity_ids.append(value.id)
