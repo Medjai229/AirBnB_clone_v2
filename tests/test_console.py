@@ -150,7 +150,7 @@ class TestConsole(unittest.TestCase):
         """Test all command input"""
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("all asdfsdfsd")
-            self.assertEqual("** class doesn't exist **\n", f.getvalue())
+            self.assertEqual("** class doesn't exist**\n", f.getvalue())
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("all State")
             self.assertEqual("[]\n", f.getvalue())
@@ -185,7 +185,7 @@ class TestConsole(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("update User " + my_id + " Name")
             self.assertEqual(
-                "** no instance found **\n", f.getvalue())
+                "** value missing **\n", f.getvalue())
 
     def test_dot_all(self):
         """Test all command """
