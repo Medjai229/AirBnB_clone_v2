@@ -33,7 +33,7 @@ echo -e "\nserver {
 		index index.html;
 	}
 
-	locaion /redirect_me {
+	location /redirect_me {
 		return 301 https://www.youtube.com/watch?v=dQw4w9WgXcQ;
 	}
 
