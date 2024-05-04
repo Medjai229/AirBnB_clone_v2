@@ -8,14 +8,15 @@ from fabric.api import local
 
 
 def do_pack():
-    """Generate a .tgz archive from the contents of the web_static"""
+    """
+    making an archive on web_static folder
+    """
+
     time = datetime.now()
-    appended_name = time.strftime("%Y%m%d%H%M%S")
-    archive = "versions/web_static_" + appended_name + ".tgz"
-
-    local("mkdir -p versions")
-
-    if local("tar -cvzf {} web_static".format(archive)).failed is True:
+    archive = 'web_static_' + time.strftime("%Y%m%d%H%M%S") + '.' + 'tgz'
+    local('mkdir -p versions')
+    create = local('tar -cvzf versions/{} web_static'.format(archive))
+    if create is not None:
+        return archive
+    else:
         return None
-
-    return archive
