@@ -16,7 +16,7 @@ class FileStorage:
             for key, obj in obj_dict.items():
                 if type(cls) == str:
                     cls = eval(cls)
-                if type(obj) == cls:
+                if (type(obj) == cls):
                     cls_dict[key] = obj
             return cls_dict
         return obj_dict
@@ -59,7 +59,7 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
-        """Deletes obj from __objects"""
+        """Deletes obj from __objects """
         if obj is not None:
             obj_dict = FileStorage.__objects
             for key in obj_dict:
