@@ -2,39 +2,37 @@
 """
 Fabric script that create and distribute an archive to a web server
 """
-from fabric.api import put, run, env, local
-from os.path import exists
+from fabric.api import env, local, put, run
 from datetime import datetime
+from os.path import exists, isdir
 env.hosts = ['35.174.184.65', '100.25.137.244']
 
 
 def do_pack():
-    """Generate a .tgz archive from the contents of the web_static"""
-    time = datetime.now()
-    appended_name = time.strftime("%Y%m%d%H%M%S")
-    archive = "versions/web_static_" + appended_name + ".tgz"
-
-    local("mkdir -p versions")
-
-    if local("tar -cvzf {} web_static".format(archive)).failed is True:
+    """generates a tgz archive"""
+    try:
+        date = datetime.now().strftime("%Y%m%d%H%M%S")
+        if isdir("versions") is False:
+            local("mkdir versions")
+        file_name = "versions/web_static_{}.tgz".format(date)
+        local("tar -cvzf {} web_static".format(file_name))
+        return file_name
+    except:
         return None
-
-    return archive
 
 
 def do_deploy(archive_path):
-    """Distribute an archive to the web servers"""
+    """distributes an archive to the web servers"""
     if exists(archive_path) is False:
         return False
-
     try:
-        file_name = archive_path.split("/")[-1]
+        file_n = archive_path.split("/")[-1]
         no_ext = file_n.split(".")[0]
         path = "/data/web_static/releases/"
         put(archive_path, '/tmp/')
         run('mkdir -p {}{}/'.format(path, no_ext))
-        run('tar -xzf /tmp/{} -C {}{}/'.format(file_name, path, no_ext))
-        run('rm /tmp/{}'.format(file_name))
+        run('tar -xzf /tmp/{} -C {}{}/'.format(file_n, path, no_ext))
+        run('rm /tmp/{}'.format(file_n))
         run('mv {0}{1}/web_static/* {0}{1}/'.format(path, no_ext))
         run('rm -rf {}{}/web_static'.format(path, no_ext))
         run('rm -rf /data/web_static/current')
@@ -45,8 +43,9 @@ def do_deploy(archive_path):
 
 
 def deploy():
-    """Deployes the static content by calling the above methods"""
-    file_path = do_pack()
-    if file_path is not None:
-        return do_deploy(file_path)
-    return False
+    """creates and distributes an archive to the web servers"""
+    new_archive_path = do_pack()
+    if exists(new_archive_path) is False:
+        return False
+    result = do_deploy(new_archive_path)
+    return result
